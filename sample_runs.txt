@@ -1,0 +1,95 @@
+SAMPLE RUN 1 — successful conversion
+Command:
+python regex_converter.py "0"
+
+NFA 5-tuple:
+Q = {0, 1}
+Σ = {0, 1}
+δ:
+  0 --0--> {1}
+q0 = 0
+F = {1}
+
+DFA 5-tuple:
+Q = {D0, D1, D2}
+Σ = {0, 1}
+δ:
+  D0 --0--> D1
+  D0 --1--> D2
+  D1 --0--> D2
+  D1 --1--> D2
+  D2 --0--> D2
+  D2 --1--> D2
+q0 = D0
+F = {D1}
+State mapping:
+  D0 = {0}
+  D1 = {1}
+  D2 = {}
+Convention: the empty subset ∅ is included as a dead/trap state when reachable.
+
+
+SAMPLE RUN 2 — successful conversion
+Command:
+python regex_converter.py "(0|1)*011"
+
+NFA 5-tuple:
+Q = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13}
+Σ = {0, 1}
+δ:
+  0 --ε--> {1, 2}
+  1 --ε--> {8}
+  2 --ε--> {4, 6}
+  3 --ε--> {1, 2}
+  4 --0--> {5}
+  5 --ε--> {3}
+  6 --1--> {7}
+  7 --ε--> {3}
+  8 --0--> {9}
+  9 --ε--> {10}
+  10 --1--> {11}
+  11 --ε--> {12}
+  12 --1--> {13}
+q0 = 0
+F = {13}
+
+DFA 5-tuple:
+Q = {D0, D1, D2, D3, D4}
+Σ = {0, 1}
+δ:
+  D0 --0--> D1
+  D0 --1--> D2
+  D1 --0--> D1
+  D1 --1--> D3
+  D2 --0--> D1
+  D2 --1--> D2
+  D3 --0--> D1
+  D3 --1--> D4
+  D4 --0--> D1
+  D4 --1--> D2
+q0 = D0
+F = {D4}
+State mapping:
+  D0 = {0, 1, 2, 4, 6, 8}
+  D1 = {1, 2, 3, 4, 5, 6, 8, 9, 10}
+  D2 = {1, 2, 3, 4, 6, 7, 8}
+  D3 = {1, 2, 3, 4, 6, 7, 8, 11, 12}
+  D4 = {1, 2, 3, 4, 6, 7, 8, 13}
+Convention: the empty subset ∅ is included as a dead/trap state when reachable.
+
+
+SAMPLE RUN 3 — rejected input
+Command:
+python regex_converter.py "012"
+
+Spreadsheet runtime warmup failed during python startup
+Traceback (most recent call last):
+  File "/tmp/tmp.QlpUkOUI9D/artifact_tool_v2-2.8.66/artifact_tool/patches/warm_spreadsheet_runtime_on_startup.py", line 26, in warm_spreadsheet_runtime_on_startup
+  File "/tmp/tmp.QlpUkOUI9D/artifact_tool_v2-2.8.66/artifact_tool/spreadsheet_warmup.py", line 785, in warm_spreadsheet_runtime
+  File "/tmp/tmp.QlpUkOUI9D/artifact_tool_v2-2.8.66/artifact_tool/spreadsheet_warmup.py", line 718, in _warm_feature_flows
+  File "/tmp/tmp.QlpUkOUI9D/artifact_tool_v2-2.8.66/artifact_tool/spreadsheet_warmup.py", line 509, in _warm_drawing_and_image_flows
+  File "/tmp/tmp.QlpUkOUI9D/artifact_tool_v2-2.8.66/artifact_tool/generated/interface/models.py", line 32861, in bring_to_front
+  File "/tmp/tmp.QlpUkOUI9D/artifact_tool_v2-2.8.66/artifact_tool/rpc/remote.py", line 764, in __call__
+  File "/tmp/tmp.QlpUkOUI9D/artifact_tool_v2-2.8.66/artifact_tool/rpc/client.py", line 175, in call
+artifact_tool.rpc.client.RemoteError: Element ordering requires an owning element collection.
+Error: invalid symbol '2' at position 3; alphabet is restricted to {0, 1}.
